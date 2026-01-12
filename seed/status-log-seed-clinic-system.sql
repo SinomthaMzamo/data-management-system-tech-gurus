@@ -1,0 +1,154 @@
+-- STATUS LOG CLEAN UP
+-- check-in -> in-progress -> completed
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     NULL,
+--     'Checked In',
+--     visit_date + check_in_time,
+--     'Reception'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Completed';
+
+-- ----- in-progress
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     'Checked In',
+--     'In Progress',
+--     visit_date + check_in_time + INTERVAL '30 minutes',
+--     'Nurse'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Completed';
+
+-- ------ completed
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     'In Progress',
+--     'Completed',
+--     visit_date + check_out_time,
+--     'System'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Completed';
+
+-- --- waiting logs
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     NULL,
+--     'Checked In',
+--     visit_date + check_in_time,
+--     'Reception'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Waiting';
+
+--- check-in then cancelled logs
+--- check-in
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     NULL,
+--     'Checked In',
+--     visit_date + INTERVAL '06:15',
+--     'Reception'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Cancelled';
+
+-- cancelled
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     visit_id,
+--     'Checked In',
+--     'Cancelled',
+--     visit_date + INTERVAL '06:30',
+--     'Admin Clerk'
+-- FROM clinic_visit
+-- WHERE visit_status = 'Cancelled';
+
+----------- fixes
+-- Back-fill cancelled logs without corresponding check-in status log record
+-- INSERT INTO status_log (
+--     visit_id,
+--     old_status,
+--     new_status,
+--     status_change_datetime,
+--     changed_by
+-- )
+-- SELECT
+--     sl.visit_id,
+--     NULL,
+--     'Checked In',
+--     sl.status_change_datetime - INTERVAL '15 minutes',
+--     'Reception'
+-- FROM status_log sl
+-- WHERE sl.new_status = 'Cancelled'
+-- AND NOT EXISTS (
+--     SELECT 1
+--     FROM status_log s2
+--     WHERE s2.visit_id = sl.visit_id
+--       AND s2.new_status = 'Checked In'
+-- );
+
+
+---- HOPEFUL: CHECK-IN --> CANCELLED (TODO: work on this later!)
+-- ===============================================
+-- SEED STATUS_LOG FOR CANCELLED VISITS (REALISTIC)
+-- ===============================================
+-- DO $$
+-- DECLARE
+--     i INT;
+--     genders TEXT[] := ARRAY['Male', 'Female'];
+--     nationalities TEXT[] := ARRAY['South African', 'Zimbabwean', 'Mozambican'];
+--     vulnerable_flags TEXT[] := ARRAY['Yes', 'No'];
+-- BEGIN
+--     FOR i IN 1..18 LOOP
+--         PERFORM add_patient_and_checkin_cancel(
+--             genders[1 + (i % 2)],
+--             DATE '1990-01-01' + (i * 365),
+--             nationalities[1 + (i % array_length(nationalities,1))],
+--             vulnerable_flags[1 + (i % 2)]
+--         );
+--     END LOOP;
+-- END;
+-- $$;
+
+
+
+
