@@ -50,6 +50,8 @@
 -- FROM clinic_visit
 -- WHERE visit_status = 'Completed';
 
+----------------------------------------------------------------------
+
 -- --- waiting logs
 -- INSERT INTO status_log (
 --     visit_id,
@@ -67,65 +69,7 @@
 -- FROM clinic_visit
 -- WHERE visit_status = 'Waiting';
 
---- check-in then cancelled logs
---- check-in
--- INSERT INTO status_log (
---     visit_id,
---     old_status,
---     new_status,
---     status_change_datetime,
---     changed_by
--- )
--- SELECT
---     visit_id,
---     NULL,
---     'Checked In',
---     visit_date + INTERVAL '06:15',
---     'Reception'
--- FROM clinic_visit
--- WHERE visit_status = 'Cancelled';
-
--- cancelled
--- INSERT INTO status_log (
---     visit_id,
---     old_status,
---     new_status,
---     status_change_datetime,
---     changed_by
--- )
--- SELECT
---     visit_id,
---     'Checked In',
---     'Cancelled',
---     visit_date + INTERVAL '06:30',
---     'Admin Clerk'
--- FROM clinic_visit
--- WHERE visit_status = 'Cancelled';
-
------------ fixes
--- Back-fill cancelled logs without corresponding check-in status log record
--- INSERT INTO status_log (
---     visit_id,
---     old_status,
---     new_status,
---     status_change_datetime,
---     changed_by
--- )
--- SELECT
---     sl.visit_id,
---     NULL,
---     'Checked In',
---     sl.status_change_datetime - INTERVAL '15 minutes',
---     'Reception'
--- FROM status_log sl
--- WHERE sl.new_status = 'Cancelled'
--- AND NOT EXISTS (
---     SELECT 1
---     FROM status_log s2
---     WHERE s2.visit_id = sl.visit_id
---       AND s2.new_status = 'Checked In'
--- );
-
+----------------------------------------------------------------------
 
 ---- HOPEFUL: CHECK-IN --> CANCELLED (TODO: work on this later!)
 -- ===============================================
@@ -148,6 +92,7 @@
 --     END LOOP;
 -- END;
 -- $$;
+
 
 
 
