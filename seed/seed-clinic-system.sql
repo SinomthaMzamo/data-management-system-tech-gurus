@@ -81,38 +81,6 @@
 
 
 -- CLINICS SAMPLE DATA
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Khayelitsha Site B Clinic', geography_id, district
--- FROM geography WHERE suburb = 'Khayelitsha';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Khayelitsha Site C Clinic', geography_id, district
--- FROM geography WHERE suburb = 'Khayelitsha';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Mitchells Plain CHC', geography_id, district
--- FROM geography WHERE suburb = 'Mitchells Plain';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Gugulethu CHC', geography_id, district
--- FROM geography WHERE suburb = 'Gugulethu';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Nyanga CHC', geography_id, district
--- FROM geography WHERE suburb = 'Nyanga';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Langa CHC', geography_id, district
--- FROM geography WHERE suburb = 'Langa';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Delft South Clinic', geography_id, district
--- FROM geography WHERE suburb = 'Delft';
-
--- INSERT INTO clinic (clinic_name, geography_id, health_district)
--- SELECT 'Bonteheuwel CDC', geography_id, district
--- FROM geography WHERE suburb = 'Bonteheuwel';
-
 -- SELECT seed_clinics();
 
 ---------------------------------------------------------------
@@ -131,21 +99,6 @@
 
 
 -- STAFF SAMPLE DATA
--- INSERT INTO staff (clinic_id, role, employment_type)
--- SELECT clinic_id, 'Professional Nurse', 'Permanent'
--- FROM clinic;
-
--- INSERT INTO staff (clinic_id, role, employment_type)
--- SELECT clinic_id, 'Enrolled Nurse', 'Permanent'
--- FROM clinic;
-
--- INSERT INTO staff (clinic_id, role, employment_type)
--- SELECT clinic_id, 'Medical Officer', 'Sessional'
--- FROM clinic;
-
--- INSERT INTO staff (clinic_id, role, employment_type)
--- SELECT clinic_id, 'Admin Clerk', 'Contract'
--- FROM clinic;
 -- SELECT seed_staff();
 
 -------------------------------------------------------
@@ -250,5 +203,6 @@
 -- SELECT seed_clinic_visits_realistic();
 
 -------------------------------------------------------
+
 
 
